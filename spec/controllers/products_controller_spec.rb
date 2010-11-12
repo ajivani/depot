@@ -90,8 +90,64 @@ describe ProductsController do
   end#post create
   describe "GET edit" do
     before(:each) do
-      
+      @book = Factory(:product)
     end
-
+    it 'should be successful' do
+      get :edit, :id=>@book
+      response.should be_success
+    end 
   end#post GET edit
+  describe "PUT 'update'"do 
+    before(:each) do
+      @book = Factory(:product)
+    end
+    describe "failure" do
+      before(:each) do
+        @attr = {:title=>"", :description=>"", :image_url=>"", :price=>0.0}
+      end
+      it "should render the edit page" do
+        put :update, :id=>@book, :product=>@attr
+        response.should render_template('edit')
+      end
+    end
+    describe "success" do
+      before(:each) do
+        @attr = {:title=>"barney's version", :description=>"<p>top ten books</p><p><b>Must read</b></p>",:image_url=>"http://image.something./klsome.lakdj.jpg",:price=>12.95}
+      end
+      it 'should save the right book' do
+        lambda do
+          put :update, :id=>@book, :proudct=>@attr
+        end.should_not change(Product, :count) 
+      end
+      it "should change the user's attributes" do
+        put :update, :id=>@book, :product=>@attr
+        product = assigns(:product)
+        @book.reload
+        @book.title.should == product.title
+        @book.description.should == product.description
+        @book.image_url.should == product.image_url
+        @book.price.should == product.price
+      end
+      it "should re-direct to the product's show page" do
+        put :update, :id=>@book, :product=>@attr
+        response.should redirect_to(product_path(@book))
+      end
+    end
+  end#PUT update
+  describe "DELETE 'destroy'" do
+    before(:each) do
+      @book = Factory(:product)
+    end
+    describe "success" do
+      it 'should delete the specified product' do
+        lambda do
+          delete :destroy, :id=>@book
+        end.should change(Product, :count).by(-1)
+      end
+      it "should redirect to the users page" do
+        delete :destroy, :id=>@book
+        response.should redirect_to(products_path)
+      end
+    end
+  end#DELETE destroy
 end 
