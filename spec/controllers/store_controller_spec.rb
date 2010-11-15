@@ -23,18 +23,19 @@ describe StoreController do
       get :index
       response.should have_selector("div.side")
     end
+    :a
     it "should have the right links on the side panel" do
       get :index
       response.should have_selector("a", :href=>"/", :content=>"Home")
       response.should have_selector("a", :href=>"/products", :content=>"Products")
       response.should have_selector("#columns")
     end
-    it "should have an entry price line and price divs" do
-      get :index
-      response.should have_selector("div.price") #select a div with #nameDiv select div class with #div.nameDiv 
-      response.should have_selector("div.price_line")
-      response.should have_selector("div.entry")
-    end
+    #it "should have an entry price line and price divs" do
+     # get :index
+     # response.should have_selector("div.price") #select a div with #nameDiv select div class with #div.nameDiv 
+     # response.should have_selector("div.price_line")
+     # response.should have_selector("div.entry")
+   # end
 
   end
 
