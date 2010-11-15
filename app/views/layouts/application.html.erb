@@ -1,14 +1,27 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Depot</title>
-  <%= stylesheet_link_tag :all %>
-  <%= javascript_include_tag :defaults %>
-  <%= csrf_meta_tag %>
-</head>
-<body>
-
-<%= yield %>
-
-</body>
+  <head>
+    <title><%= self.title %></title>
+    <%= stylesheet_link_tag :all %>
+    <%= javascript_include_tag :defaults %>
+    <%= csrf_meta_tag %>
+  </head>
+  <body id="container">
+    <div id="store">
+      <div id="banner">
+        <%=image_tag("rails.png") %>
+        <%= @page_title || "Catalog" %>
+      </div>
+      <div id="columns">
+        <%= render 'layouts/side' %>
+        <div id="main">
+          <% flash.each do |key,value| %>
+              <%= content_tag(:div, value, :class=> "flash #{key}") %> <!--div class="flash <!%=key%><!%= value %><!/div-->
+          <%end%>
+          <%= yield %>
+        </div>
+      </div>
+    <%= debug(params) if Rails.env.development? %>
+    </div>
+  </body>
 </html>

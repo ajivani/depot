@@ -1,5 +1,8 @@
 /* Global styles */
-
+#store {
+  color: black;
+  padding: 0px;
+}
 #store #notice {
         color: #000;
         border: 2px solid red;
@@ -109,5 +112,50 @@
   color: #44a;
   font-weight: bold;
   margin-right: 2em;
+}
+
+/* stuff for the banner */
+#banner {
+  background: #000;
+  padding-top: 0px;
+  padding-bottom: 7px;
+  border-bottom: 2px solid;
+  font: small-caps 75px/95px "Times New Roman", sans-serif;
+  color: #fff;
+  text-align: center;
+}
+#banner img{
+  float: left;
+  width: 80px;
+}
+#main {
+  margin-left: 13em;
+  padding-top: 4ex;
+  padding-left: 2em;
+  background: #22221f;
+  color: #bbbbbb;
+}
+#columns {
+  background: #3d3f2d;
+  background: black;
+}
+
+.side {
+  float: left;
+  padding-top: 5em;
+  padding-left: 1em;
+  padding-bottom: 5em;
+  width: 12em;
+  /*background: #bbb;*/
+}
+.side a{
+  /*color: #0606eb;*/
+  color: #227;
+  font-size: medium;
+  font-weight: bold;
+}
+
+.side table tr td{
+  padding: 0.5em;
 }
 
