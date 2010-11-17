@@ -1,16 +1,17 @@
-<% if notice %>
-  <p id="notice"><%= notice %></p>
-<%end%>
+<%if session[:counter] > 5  and session[:counter] < 50%>
+   <% flash[:success] = "You have viewed this page " + pluralize(session[:counter], 'time') %> <!--if you take the = out, then get two flashes -->
+<% end %>
 
 <h1>Your Catalog</h1>
 
 <% @products.each do |product| %>
   <div class="entry">
-    <%= image_tag(product.image_url) %>
+    <%= link_to image_tag(product.image_url), line_items_path(:product_id=>product), :method=>:post %><!--we use line_items_path (sincde the get method will call line_items index action and the post method will call line_items create action--!> <%#=link_to image_tag(product.image_url), line_items_path(:product_id=>product), html_options = {:method=>:post} %>
     <h3><%= product.title %></h3>
     <%= sanitize(product.description) %>
     <div class="price_line">
       <span class="price"><%= number_to_currency(product.price) %></span>
+      <%= button_to("Add to Cart", line_items_path(:product_id => product)) %> <!--creates http://localhost:3000/line_items?product_id=4  and :product_id is available in the controller when the button is pressed now-->
     </div>
   </div>
 <% end %>

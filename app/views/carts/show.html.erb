@@ -1,0 +1,14 @@
+<h2> Your Cart </h2>
+
+<% if !@cart.line_items.nil? %>
+  <ul>
+    <% @cart.line_items.each do |li| %>
+      <li><%=li.product.title%></li>
+    <%end%>
+  </ul>
+<% end %>
+
+
+
+<%= link_to 'Edit', edit_cart_path(@cart) %> |
+<%= link_to 'Back', carts_path %>
