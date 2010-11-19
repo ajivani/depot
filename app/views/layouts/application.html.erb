@@ -29,9 +29,11 @@
                 <td><%= link_to "Your Cart", cart_path(session[:cart_id]) %></td>
               </tr>
             </table>
+            <% if !@cart.nil? %>
               <div id="cart">
-                <%#= render @cart %> <!-- cart is something that will be availabe, and it'll look for it in the carts dir, with _cart.html.erb-->  
-            </div>
+                <%= render @cart %> <!-- cart is something that will be availabe, and it'll look for it in the carts dir, with _cart.html.erb-->  
+              </div>
+            <% end %>
           </div>
 
         <div id="main">
