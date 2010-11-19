@@ -9,7 +9,6 @@
 .success a {color:#264409;}
 .info a {color:#205791;}
 
-
 /* Global styles */
 html {
   background: black;
@@ -30,7 +29,7 @@ html {
 
 #store h1 {
         font:  150% sans-serif;
-        color: #226;
+        color: #721;
         border-bottom: 3px dotted #77d;
 }
 
@@ -144,7 +143,7 @@ html {
   width: 80px;
 }
 #main {
-  margin-left: 13em;
+  margin-left: 20em;
   padding-top: 4ex;
   padding-left: 2em;
   background: #22221f;
@@ -158,9 +157,9 @@ html {
 .side {
   float: left;
   padding-top: 5em;
-  padding-left: 1em;
+  padding-left: 0.0em;
   padding-bottom: 5em;
-  width: 12em;
+  width: 20em;
   /*background: #bbb;*/
 }
 .side a{
@@ -177,3 +176,36 @@ html {
 #store .entry form, #store .entry form div{
   display: inline;
 }
+#store .cart_title {
+  font: 250% bold;
+  color: #fff;
+}
+#store .item_quantity {
+  font-weight: bold;
+}
+
+#store .item_price, #store .total_line {
+  text-align: right;
+}
+#store .total_line .total_cell {
+  font-weight: bold;
+  color: #fff;
+  border-top: 2px solid #bbbbbb;
+
+}
+
+#cart, #cart table {
+  font-size: smaller;
+  color: white;
+}
+
+#cart table {
+  border-top: 1px dotted #fff;
+  border-bottom: 1px dotted #fff;
+  margin-top: 10px;
+}
+.remove_link a{
+  font-size: smaller;
+}
+
+

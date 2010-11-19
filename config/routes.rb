@@ -5,7 +5,7 @@ Depot::Application.routes.draw do
 
   get "store/index"
 
-  root :to=> 'store#index', :as=>'store' #tells it to create a store_path variable 
+  root :to=> 'store#index', :as=>'store' #tells it to create a store_path variable and store_url instead of stores_path and stores_url which would be the default behaviour 
 
   resources :products
 

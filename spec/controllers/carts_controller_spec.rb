@@ -1,125 +1,104 @@
 require 'spec_helper'
 
 describe CartsController do
-
+render_views
   def mock_cart(stubs={})
     @mock_cart ||= mock_model(Cart, stubs).as_null_object
   end
+  before(:each) do
+    @book = Factory(:product)
+    @cart = Factory(:cart)
+  end
 
   describe "GET index" do
-    it "assigns all carts as @carts" do
-      Cart.stub(:all) { [mock_cart] }
-      get :index
-      assigns(:carts).should eq([mock_cart])
+    it "should show the index page for the carts" do
+#      get :index
+ #     response.should have_selector("h1", :content=>"Listing carts")
     end
   end
 
-  describe "GET show" do
-    it "assigns the requested cart as @cart" do
-      Cart.stub(:find).with("37") { mock_cart }
-      get :show, :id => "37"
-      assigns(:cart).should be(mock_cart)
-    end
-  end
-
-  describe "GET new" do
-    it "assigns a new cart as @cart" do
-      Cart.stub(:new) { mock_cart }
-      get :new
-      assigns(:cart).should be(mock_cart)
-    end
-  end
-
-  describe "GET edit" do
-    it "assigns the requested cart as @cart" do
-      Cart.stub(:find).with("37") { mock_cart }
-      get :edit, :id => "37"
-      assigns(:cart).should be(mock_cart)
-    end
-  end
-
+  
   describe "POST create" do
 
-    describe "with valid params" do
-      it "assigns a newly created cart as @cart" do
-        Cart.stub(:new).with({'these' => 'params'}) { mock_cart(:save => true) }
-        post :create, :cart => {'these' => 'params'}
-        assigns(:cart).should be(mock_cart)
-      end
-
-      it "redirects to the created cart" do
-        Cart.stub(:new) { mock_cart(:save => true) }
-        post :create, :cart => {}
-        response.should redirect_to(cart_url(mock_cart))
-      end
-    end
-
-    describe "with invalid params" do
-      it "assigns a newly created but unsaved cart as @cart" do
-        Cart.stub(:new).with({'these' => 'params'}) { mock_cart(:save => false) }
-        post :create, :cart => {'these' => 'params'}
-        assigns(:cart).should be(mock_cart)
-      end
-
-      it "re-renders the 'new' template" do
-        Cart.stub(:new) { mock_cart(:save => false) }
-        post :create, :cart => {}
-        response.should render_template("new")
-      end
-    end
 
   end
 
   describe "PUT update" do
 
-    describe "with valid params" do
-      it "updates the requested cart" do
-        Cart.should_receive(:find).with("37") { mock_cart }
-        mock_cart.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => "37", :cart => {'these' => 'params'}
-      end
+  end
 
-      it "assigns the requested cart as @cart" do
-        Cart.stub(:find) { mock_cart(:update_attributes => true) }
-        put :update, :id => "1"
-        assigns(:cart).should be(mock_cart)
-      end
-
-      it "redirects to the cart" do
-        Cart.stub(:find) { mock_cart(:update_attributes => true) }
-        put :update, :id => "1"
-        response.should redirect_to(cart_url(mock_cart))
-      end
+  describe "DELETE destroy" do
+    before(:each) do
+      @book = Factory(:product)
+      @cart = Factory(:cart)
+      @li = @cart.line_items.first #probably not needed
     end
-
-    describe "with invalid params" do
-      it "assigns the cart as @cart" do
-        Cart.stub(:find) { mock_cart(:update_attributes => false) }
-        put :update, :id => "1"
-        assigns(:cart).should be(mock_cart)
-      end
-
-      it "re-renders the 'edit' template" do
-        Cart.stub(:find) { mock_cart(:update_attributes => false) }
-        put :update, :id => "1"
-        response.should render_template("edit")
-      end
+    it "should destroy the cart" do
+      lambda do 
+        delete :destroy, :id=>@cart.id 
+      end.should change(Cart, :count).by(-1)
+    end
+    it "should redirect to the home page/root page/store_url" do
+      delete :destroy, :id=>@cart.id
+      response.should redirect_to(store_url)
+    end
+    it "first we add a li then we destroy the cart for that line item...and so the carts lines in the line_items table should be removed" do
+      lambda do
+        #@cart.line_items.create!(:product_id=>@book.id)
+        @cart.add_product(@book.id)
+      end.should change(LineItem, :count).by(1)
+      lambda do
+        delete :destroy, :id=>@cart.id
+      end.should change(LineItem, :count).by(-1)
+    end
+    
+    it "shoulc change the LineItem count as well" do
+      lambda do
+        #@cart.line_items.create!(:product_id=>@book.id)
+        @cart.add_product(@book.id)
+        @li_count = LineItem.count
+        delete :destroy, :id=>@cart.id
+        @li_count_after_destroy = LineItem.count
+        @li_count.should_not == @li_count_after_destroy
+        (@li_count-1).should == @li_count_after_destroy
+      end.should change(Cart, :count).by(-1)
     end
 
   end
 
-  describe "DELETE destroy" do
-    it "destroys the requested cart" do
-      Cart.should_receive(:find).with("37") { mock_cart }
-      mock_cart.should_receive(:destroy)
-      delete :destroy, :id => "37"
+  describe "add_product method" do
+    before(:each) do
+      @book = Factory(:product)
+      @cart = Factory(:cart)
+      @li = @cart.line_items.first #probably not needed
+    end
+    it "shoudld add a product correctly" do
+      lambda do
+        li =  @cart.add_product(@book.id)
+        li.save
+      end.should change(LineItem, :count).by(1)
+      lambda do
+        li = @cart.add_product(@book.id)
+        li.save
+        li = LineItem.where(:product_id=>@book.id).first
+        li.quantity.should == 2
+      end.should_not change(LineItem, :count)
+      lambda do
+        new_product = Factory(:product)
+        new_product.save
+        li = @cart.add_product(new_product.id)
+        li.save
+        li = LineItem.where(:product_id=>new_product.id).first
+        li.quantity.should == 1
+      end.should change(LineItem, :count).by(1)
+      lambda do
+        li = @cart.add_product(@book.id)
+        li.save
+        li = LineItem.where(:product_id=>@book.id).first
+        li.quantity.should == 3
+      end.should_not change(LineItem, :count)
     end
 
-    it "redirects to the carts list" do
-      Cart.stub(:find) { mock_cart }
-      delete :destroy, :id => "1"
-      response.should redirect_to(carts_url)
-    end
   end
 
 end

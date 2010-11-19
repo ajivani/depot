@@ -5,7 +5,7 @@ describe LineItem do
   before(:each) do
     @book = Factory(:product)
     @cart = Factory(:cart)
-    @attr = {:product_id=>@book.id, :cart_id=>@cart.id}
+    @attr = {:product_id=>@book.id, :cart_id=>@cart.id, :price=>100}
     @li = LineItem.create!(@attr)
   end
   it "should create a new instance with valid attributes" do
@@ -25,7 +25,7 @@ describe LineItem do
   it "a line item should respond to cart and product methods...ie li.product and li.cart" do
     @li.should respond_to(:product)
     @li.should respond_to(:cart)
-    
+    @li.should respond_to(:price)    
   end
 
 

@@ -45,7 +45,7 @@ class ProductsController < ApplicationController
         flash[:notice] = "Product Created!"
         redirect_to @product #same as saying product_path(@product)
       else
-        render :new
+        render new_product_path
       end
   end
 

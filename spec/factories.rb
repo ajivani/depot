@@ -5,6 +5,7 @@ Factory.define :product do |product|
   product.image_url   "picture.png"
   product.price       10.99
 end
+
 Factory.define :cart do |cart|
 #no fields just want to use cart.id, since it's the only field that matters
 end

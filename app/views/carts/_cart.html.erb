@@ -1,0 +1,14 @@
+<div class="cart_title"> Your Cart </div>
+<% if !cart.line_items.nil? %>
+  <table>
+    <%= render(cart.line_items) %> <!-- inside the partial we'll have the name |line_item| - dir of the obj being rendered with the anem of the table as the name _line_items--> 
+    <tr class="total_line">
+      <td colspan="2">Total</td>
+      <td class="total_cell"><%= number_to_currency(cart.total_price) %> </td>
+    </tr>
+  </table>
+  <%= button_to "Empty cart", cart_path(cart), :method=>:delete, :confirm=>"Are you sure?" %>
+<% end %>
+
+<%= link_to 'Back', store_url%>
+

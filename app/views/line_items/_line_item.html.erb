@@ -1,0 +1,6 @@
+<tr>
+  <td class="item_quantity"><%= line_item.quantity %>&times;</td>
+  <td><%= line_item.product.title %></td>
+  <td class="item_price"><%= number_to_currency(line_item.product.price) %></td>
+  <td class="remove_link"> <%= link_to "remove item", line_item_path(line_item.id), :method=>:delete %> <td> 
+</tr>

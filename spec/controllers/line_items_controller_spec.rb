@@ -9,7 +9,7 @@ render_views
     before(:each) do
       @product= Factory(:product)
       @cart = Cart.create!#not needed
-      @line_item = @cart.line_items.create!(:product=>@product) #not needed
+      @line_item = @cart.add_product(@product.id)#@line_item = @cart.line_items.create!(:product_id=>@product, :price=>@) #not needed
     end
     it "should have a valid line_item" do
       @product.should_not be_nil
@@ -19,17 +19,13 @@ render_views
     describe "success" do
       it "should change the lineItem by 1" do
         lambda do
-          post :create, :product_id=>Factory(:product).id
+          post :create, :product_id=>Factory(:product).id, :price =>Factory(:product).price
         end.should change(LineItem, :count).by(1)
       end
       it "should render the show page for the cart item" do
-        post :create, :product_id=>Factory(:product).id
-        response.should redirect_to(assigns(:line_item).cart) #the value of @line_item from contoller comes here
+        post :create, :product_id=>Factory(:product).id, :price => Factory(:product).price
+        response.should redirect_to(store_path) #the value of @line_item from contoller comes here
       end
-    end
-    #gotta have it so that it doesn't save the line_item if  
-    describe "failure" do
-      #moved tests intot he model
     end
   end
 
