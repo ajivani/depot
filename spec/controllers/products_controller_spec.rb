@@ -12,9 +12,9 @@ describe ProductsController do
         @attr = {:title=>"", :description=>"", :image_url=>"", :price=>""}
       end
       it 'should not create a product' do
-      #  lambda do
-       #   post :create, :product=>@attr
-       # end.should_not change(Product, :count)
+        lambda do
+          post :create, :product=>@attr
+       end.should_not change(Product, :count)
       end
       it 'should render the right page' do
         lambda do

@@ -8,7 +8,7 @@
       <td class="total_cell"><%= number_to_currency(@cart.total_price) %> </td>
     </tr>
   </table>
-  <%= button_to "Empty cart", cart_path(@cart), :method=>:delete, :confirm=>"Are you sure?" %>
+  <%= button_to "Empty cart", store_path, :method=>:delete, :confirm=>"Are you sure?" %>
 <% end %>
 
 

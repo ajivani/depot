@@ -13,28 +13,8 @@
         <%= @page_title || "Catalog" %>
       </div>
       <div id="columns">
-        <%#= render 'layouts/side' %>
-          <div class="side">
-            <table>
-              <tr>
-                 <td><%= link_to "Home", store_path %></td>
-              </tr>
-              <tr>
-                <td><%= link_to "Products", products_path %></td>
-              </tr>
-              <tr>
-                <td><%= link_to "Contact Us", "#" %></td>
-              </tr>
-              <tr>
-                <td><%= link_to "Your Cart", cart_path(session[:cart_id]) %></td>
-              </tr>
-            </table>
-            <% if !@cart.nil? %>
-              <div id="cart">
-                <%= render @cart %> <!-- cart is something that will be availabe, and it'll look for it in the carts dir, with _cart.html.erb-->  
-              </div>
-            <% end %>
-          </div>
+        <%= render 'layouts/side' %>
+          
 
         <div id="main">
           <% flash.each do |key,value| %>

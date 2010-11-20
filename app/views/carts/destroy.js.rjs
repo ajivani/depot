@@ -1,0 +1,6 @@
+
+page[:cart].visual_effect :blind_up
+page.replace_html('cart', render(@cart)) #@cart comes from the view  #tell it to replace anything with teh id cart 
+#page[:current_item].visual_effect :highlight,
+ #                                 :startcolor=> "#F80000",
+ #                                 :endcolor=> "#000000" 

@@ -48,10 +48,10 @@ class LineItemsController < ApplicationController
     product = Product.find(params[:product_id]) #comes fromt he view ie when you hit the button it goes: http://localhost:3000/line_items?product_id=4 
     @line_item = @cart.add_product(product.id)#now we don't need that line since we have a better way of adding elements to the line_items table, one that takes quantity into account @line_item = @cart.line_items.build(:product=>product)#want cart.line_items.build(:product@line_item = @cart.line_items.build(:product_id=>product.id) #@line_item = LineItem.new(params[:line_item])#this is used when we have a page on a form with line_items and shit
    
-
     respond_to do |format|
       if @line_item.save
-        format.html { redirect_to(store_path)} # :notice => 'Line item was successfully created.') } #redirects to @line_item
+        format.html { redirect_to(store_url)} # :notice => 'Line item was successfully created.') } #redirects to @line_item
+        format.js {@current_item = @line_item } #pass the current li down to the template...need the right <tr>          #if teh browser asks for a ajax well don't just send them the page over and over, send them this template...ie rails looks for the create template to render.
         format.xml  { render :xml => @line_item, :status => :created, :location => @line_item }
       else
         format.html { render :action => "new" }
@@ -80,12 +80,14 @@ class LineItemsController < ApplicationController
   # DELETE /line_items/1.xml
   # check out the path /line_items/(li.id) wiht the delete method for http probably using javascript
   def destroy
+    @cart = current_cart
     @line_item = LineItem.find(params[:id])
-    @line_item.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(cart_path(session[:cart_id])) }
-      format.xml  { head :ok }
-    end
+      @line_item.destroy
+      @cart.destroy if @cart.line_items.count < 1
+      respond_to do |format|
+        format.html { redirect_to(cart_path(session[:cart_id])) }
+        format.js 
+        format.xml  { head :ok }
+      end
   end
 end

@@ -15,6 +15,9 @@ class Cart < ActiveRecord::Base
     end
     current_item
   end
+  def total_items
+    self.line_items.each.sum {|li| li.quantity}
+  end
 
 end
 

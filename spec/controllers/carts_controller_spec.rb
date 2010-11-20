@@ -12,8 +12,8 @@ render_views
 
   describe "GET index" do
     it "should show the index page for the carts" do
-#      get :index
- #     response.should have_selector("h1", :content=>"Listing carts")
+      get :index
+      response.should have_selector("h1", :content=>"Listing carts")
     end
   end
 

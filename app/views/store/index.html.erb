@@ -6,12 +6,14 @@
 
 <% @products.each do |product| %>
   <div class="entry">
-    <%= link_to image_tag(product.image_url), line_items_path(:product_id=>product.id), :method=>:post %><!--we use line_items_path (sincde the get method will call line_items index action and the post method will call line_items create action--!> <%#=link_to image_tag(product.image_url), line_items_path(:product_id=>product), html_options = {:method=>:post} %>
+    <% form_tag line_items_path(:product_id=>product), :remote=>true do %><!-- line_items_path, form means post method is used, therefore it must be the create method..if it was just a get then it would teh index method --> <%#= link_to image_tag(product.image_url), line_items_path(:product_id=>product.id), :method=>:post, :remote=>true %><!--we use line_items_path (sincde the get method will call line_items index action and the post method will call line_items create action--!> <%#=link_to image_tag(product.image_url), line_items_path(:product_id=>product), html_options = {:method=>:post} %>
+      <%= image_submit_tag product.image_url, :width=>100  %>
+    <%end %>
     <h3><%= product.title %></h3>
     <%= sanitize(product.description) %>
     <div class="price_line">
       <span class="price"><%= number_to_currency(product.price) %></span>
-      <%= button_to("Add to Cart", line_items_path(:product_id => product.id)) %> <!--creates http://localhost:3000/line_items?product_id=4  and :product_id is available in the controller when the button is pressed now-->
+      <%= button_to("Add to Cart", line_items_path(:product_id => product.id), :remote=>true) %> <!--the  remote makes the browerer send for a ajax request...now check the controller --> <!--creates http://localhost:3000/line_items?product_id=4  and :product_id is available in the controller when the button is pressed now-->
     </div>
   </div>
 <% end %>
